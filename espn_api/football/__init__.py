@@ -2,7 +2,8 @@ __all__ = ['League',
            'Team',
            'Matchup',
            'Player',
-           'BoxPlayer'
+           'BoxPlayer',
+           'BoxScore'
            ]
 
 from .league import League
@@ -10,3 +11,4 @@ from .team import Team
 from .matchup import Matchup
 from .player import Player
 from .box_player import BoxPlayer
+from .box_score import BoxScore
