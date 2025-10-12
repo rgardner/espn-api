@@ -10,6 +10,8 @@ with open("README.md") as f:
 setup(
     name='espn_api',
     packages=find_packages(),
+    package_data={'espn_api': ['py.typed']},
+    include_package_data=True,
     version=pkg_vars["__version__"],
     author='Christian Wendt',
     description='ESPN API',
