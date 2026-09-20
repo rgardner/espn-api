@@ -28,6 +28,39 @@ def _card_player(transactions=None):
 
 
 class PlayerTransactionHistoryTest(TestCase):
+    def test_player_has_empty_news_by_default(self):
+        player = Player(_card_player(), 2022)
+        self.assertEqual(player.news, {})
+
+    def test_player_parses_news(self):
+        news = {
+            "news": {
+                "feed": [
+                    {
+                        "published": "2026-09-19T01:04:47Z",
+                        "headline": "Fantasy football update",
+                        "story": "Player details here",
+                        "unused": "not exposed",
+                    },
+                    {"headline": "Second update"},
+                ]
+            }
+        }
+
+        player = Player(_card_player(), 2022, news=news)
+
+        self.assertEqual(
+            player.news,
+            [
+                {
+                    "published": "2026-09-19T01:04:47Z",
+                    "headline": "Fantasy football update",
+                    "story": "Player details here",
+                },
+                {"published": "", "headline": "Second update", "story": ""},
+            ],
+        )
+
     def test_roster_player_has_empty_transactions(self):
         player = Player(_card_player(), 2022)
         self.assertEqual(player.transactions, [])

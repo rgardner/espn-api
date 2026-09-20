@@ -9,7 +9,13 @@ class Player(object):
     """Player are part of team"""
 
     def __init__(
-        self, data, year, pro_team_schedule=None, player_map=None, get_team_data=None
+        self,
+        data,
+        year,
+        pro_team_schedule=None,
+        player_map=None,
+        get_team_data=None,
+        news=None,
     ):
         self.name = json_parsing(data, "fullName")
         self.playerId = json_parsing(data, "id")
@@ -26,6 +32,18 @@ class Player(object):
         self.position = ""
         self.stats = {}
         self.schedule = {}
+        self.news = {}
+
+        if news:
+            news_feed = news.get("news", {}).get("feed", [])
+            self.news = [
+                {
+                    "published": item.get("published", ""),
+                    "headline": item.get("headline", ""),
+                    "story": item.get("story", ""),
+                }
+                for item in news_feed
+            ]
 
         # Get players main position
         for pos in json_parsing(data, "eligibleSlots"):

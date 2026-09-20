@@ -460,7 +460,10 @@ class League(BaseLeague):
         ]
 
     def player_info(
-        self, name: str = None, playerId: Union[int, list] = None
+        self,
+        name: str = None,
+        playerId: Union[int, list] = None,
+        include_news=False,
     ) -> Union[Player, List[Player]]:
         """Returns Player class if name found"""
 
@@ -473,11 +476,18 @@ class League(BaseLeague):
 
         data = self.espn_request.get_player_card(playerId, self.finalScoringPeriod)
         pro_schedule = self._get_all_pro_schedule()
+
+        news = {}
+        if include_news:
+            for player_id in playerId:
+                news[player_id] = self.espn_request.get_player_news(player_id)
+
         if len(data["players"]) == 1:
             return Player(
                 data["players"][0],
                 self.year,
                 pro_schedule,
+                news=news.get(playerId[0]) if include_news else None,
                 player_map=self.player_map,
                 get_team_data=self.get_team_data,
             )
@@ -487,6 +497,7 @@ class League(BaseLeague):
                     player,
                     self.year,
                     pro_schedule,
+                    news=news.get(player["id"]) if include_news else None,
                     player_map=self.player_map,
                     get_team_data=self.get_team_data,
                 )
