@@ -1,10 +1,4 @@
-__all__ = ['League',
-           'Team',
-           'Matchup',
-           'Player',
-           'BoxPlayer',
-           'BoxScore'
-           ]
+__all__ = ["League", "Team", "Matchup", "Player", "BoxPlayer", "BoxScore"]
 
 from .league import League
 from .team import Team
